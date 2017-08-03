@@ -12,23 +12,6 @@ class Links extends Component {
 
     componentDidMount(){
 
-        let systems = _.map(this.mainSystems(this.props.status), (s, i) => {return {id: i, label:s}});
-        let offset = systems.length;
-        let components = _.map(this.components(this.props.status), (s, i) => {return {id: i+offset, label:s}});
-
-        let systemNodes = _.chain(systems)
-            .map(s => {return {id: s.id, label: s.label, color: "green", value: 5}})
-            .value();
-
-        let componentNodes = _.chain(components)
-            .map(s => {return {id: s.id, label: s.label, color: "red", value: 3}})
-            .value();
-
-        let allNodes = [];
-        allNodes.push.apply(allNodes, systemNodes);
-        allNodes.push.apply(allNodes, componentNodes);
-
-
         let index = 1;
         let allItems = _.chain(this.props.status)
             .groupBy(s => s[0].system)
@@ -127,6 +110,7 @@ class Links extends Component {
         var options = {
             pyhsic: true,
             nodes: {
+                borderWidth: 5,
                 shape: 'dot',
                 scaling:{
                     label: {
@@ -136,10 +120,12 @@ class Links extends Component {
                 }
             },
             edges: {
+                width: 2,
                 smooth: {
                     type: 'continuous'
                 }
-            }
+            },
+            layout:{randomSeed:2}
 
         };
         var network = new vis.Network(container, data, options);
